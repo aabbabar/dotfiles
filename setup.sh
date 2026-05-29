@@ -19,4 +19,7 @@ echo "==> Symlinking nvim config"
 mkdir -p ~/.config
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 
-echo "==> Done! Don't forget to create ~/.zshrc.local if needed."
+echo "==> Symlinking tmux config"
+ln -sf ~/dotfiles/tmux/tmux.conf ~/.tmux.conf
+
+echo "==> Done!"
