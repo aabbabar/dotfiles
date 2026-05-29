@@ -1,0 +1,75 @@
+# prompt
+fpath+=($HOME/.zsh/pure)
+autoload -U promptinit; promptinit
+prompt pure
+
+# history
+HISTSIZE=1000000000
+SAVEHIST=1000000000
+HISTFILE="${XDG_CACHE_HOME:-$HOME}/.zsh_history"
+HISTDUP=erase
+setopt appendhistory sharehistory hist_ignore_space
+setopt hist_ignore_all_dups hist_save_no_dups hist_ignore_dups hist_find_no_dups
+
+# cmp
+zmodload zsh/complist
+autoload -U compinit && compinit
+autoload -U colors && colors
+zstyle ':completion:*' menu select
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;33
+
+# opts
+setopt auto_menu menu_complete autocd auto_param_slash
+setopt no_case_glob no_case_match globdots
+setopt always_to_end
+unsetopt complete_in_word
+
+# binds
+bindkey -v # vim mode
+bindkey "^n" history-search-forward
+bindkey "^p" history-search-backward
+
+# fzf
+export FZF_CTRL_R_OPTS='--height 50% --reverse --prompt="> "'
+source <(fzf --zsh)
+bindkey '^R' fzf-history-widget
+
+# alias
+alias c='clear'
+alias l='ls -lah --color'
+alias v='nvim'
+
+alias ga='git add'
+alias gc='git commit'
+alias gco='git checkout'
+alias gd='git diff'
+alias gfa='git fetch --all'
+alias gfo='git fetch origin'
+alias glog='git log --oneline --graph --decorate --all'
+alias gp='git push'
+alias gpl='git pull --rebase'
+alias gr='git reset'
+alias grh='git reset --hard'
+alias grbi='git rebase --interactive'
+alias grbom='git rebase origin/main'
+alias gst='git status'
+
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+alias -g .......='../../../../../..'
+alias -g ........='../../../../../../..'
+
+# plugins
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# golang
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export GOROOT=$(go env GOROOT)
+
+# machine-specific config
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
