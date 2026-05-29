@@ -15,4 +15,8 @@ echo "==> Cloning plugin repos"
 [ -d ~/.zsh/pure ] || \
   git clone https://github.com/sindresorhus/pure.git ~/.zsh/pure
 
+echo "==> Symlinking nvim config"
+mkdir -p ~/.config
+ln -sf ~/dotfiles/nvim ~/.config/nvim
+
 echo "==> Done! Don't forget to create ~/.zshrc.local if needed."
