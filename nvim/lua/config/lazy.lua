@@ -30,12 +30,21 @@ vim.opt.rtp:prepend(lazypath)
 
 require("config.options")
 
+-- Build spec from shared plugins + optional local plugins
+local spec = {
+  { import = "plugins" },
+}
+
+local ok, local_plugins = pcall(require, "config.local")
+if ok and type(local_plugins) == "table" then
+  for _, plugin in ipairs(local_plugins) do
+    table.insert(spec, plugin)
+  end
+end
+
 -- Setup lazy.nvim
 require("lazy").setup({
-  spec = {
-    -- import your plugins
-    { import = "plugins" },
-  },
+  spec = spec,
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "kanagawa" } },

@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function() vim.treesitter.start() end,
 })
 
-vim.lsp.enable({ "lua_ls", "yamlls", "ts_ls", "eslint", "gopls" })
+vim.lsp.enable({ "lua_ls", "yamlls", "ts_ls", "eslint", "gopls", "clangd", "marksman", "arduino_language_server" })
 
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#282828" })
 vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#282828" })
