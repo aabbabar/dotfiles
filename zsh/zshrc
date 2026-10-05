@@ -52,7 +52,7 @@ alias gpl='git pull --rebase'
 alias gr='git reset'
 alias grh='git reset --hard'
 alias grbi='git rebase --interactive'
-alias grbom='git rebase origin/main'
+alias grbom='git rebase origin/master'
 alias gst='git status'
 
 alias -g ...='../..'
