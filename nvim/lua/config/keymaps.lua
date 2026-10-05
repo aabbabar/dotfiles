@@ -79,6 +79,30 @@ local function get_git_root()
   return root
 end
 
+local function get_git_relative_path(abs_path)
+  return vim.fn.fnamemodify(abs_path, ":." .. get_git_root())
+end
+
+local function copy_visual_file_reference()
+  local abs_path = vim.api.nvim_buf_get_name(0)
+  if abs_path == "" then
+    vim.notify("Cannot copy a file reference from an unnamed buffer", vim.log.levels.ERROR)
+    return
+  end
+
+  -- '< and '> are updated only after Visual mode ends.
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+  if start_line <= 0 or end_line <= 0 then
+    vim.notify("Cannot determine the visual selection", vim.log.levels.ERROR)
+    return
+  end
+
+  start_line, end_line = math.min(start_line, end_line), math.max(start_line, end_line)
+  local line_anchor = start_line == end_line and ("#L" .. start_line) or ("#L" .. start_line .. "-L" .. end_line)
+  copy_to_clipboard(get_git_relative_path(abs_path) .. line_anchor)
+end
+
 -- Full absolute path
 vim.keymap.set("n", "<leader>fpa", function()
   local path = vim.fn.expand("%:p")
@@ -87,10 +111,8 @@ end, { desc = "Copy full absolute path" })
 
 -- Full relative path (relative to git root)
 vim.keymap.set("n", "<leader>fpr", function()
-  local git_root = get_git_root()
   local abs_path = vim.fn.expand("%:p")
-  local rel_path = vim.fn.fnamemodify(abs_path, ":." .. git_root)
-  copy_to_clipboard(rel_path)
+  copy_to_clipboard(get_git_relative_path(abs_path))
 end, { desc = "Copy path relative to git root" })
 
 -- Just filename
@@ -98,6 +120,8 @@ vim.keymap.set("n", "<leader>fpf", function()
   local filename = vim.fn.expand("%:t")
   copy_to_clipboard(filename)
 end, { desc = "Copy filename only" })
+
+vim.keymap.set("x", "<leader>cl", copy_visual_file_reference, { desc = "Copy Copilot line reference" })
 
 vim.filetype.add({
   extension = {
