@@ -1,0 +1,7 @@
+mode: session
+nerdfont: false
+status_format: false
+window_prefix: "{project}/worktrees/"
+
+panes:
+  - focus: true

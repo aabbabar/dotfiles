@@ -19,10 +19,20 @@ link_config "$HOME/dotfiles/zsh/zshrc" "$HOME/.zshrc"
 echo "==> Symlinking zsh scripts"
 mkdir -p ~/.zsh
 link_config "$HOME/dotfiles/zsh/git-fzf.zsh" "$HOME/.zsh/git-fzf.zsh"
+link_config "$HOME/dotfiles/zsh/worktrees.zsh" "$HOME/.zsh/worktrees.zsh"
 
 echo "==> Symlinking session configuration"
 mkdir -p ~/.config/sesh
 link_config "$HOME/dotfiles/sesh/sesh.toml" "$HOME/.config/sesh/sesh.toml"
+
+echo "==> Symlinking workmux configuration"
+mkdir -p ~/.config/workmux
+link_config "$HOME/dotfiles/workmux/config.yaml" "$HOME/.config/workmux/config.yaml"
+link_config "$HOME/dotfiles/workmux/bare.yaml" "$HOME/.config/workmux/bare.yaml"
+
+echo "==> Symlinking Copilot status hooks"
+mkdir -p ~/.copilot/hooks
+link_config "$HOME/dotfiles/workmux/copilot-hooks.json" "$HOME/.copilot/hooks/workmux-status.json"
 
 echo "==> Cloning plugin repos"
 [ -d ~/.zsh/zsh-syntax-highlighting ] || \
