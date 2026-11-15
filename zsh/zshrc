@@ -65,6 +65,7 @@ alias -g ........='../../../../../../..'
 # plugins
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/git-fzf.zsh
+eval "$(zoxide init zsh)"
 
 # env
 export EDITOR=nvim

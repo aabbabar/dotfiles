@@ -1,0 +1,22 @@
+# Keep active tmux sessions first, then fixed sessions, then learned paths.
+sort_order = ["tmux", "config", "zoxide"]
+
+# Makes a query such as "my project" match "my-project" or "my_project".
+separator_aware = true
+
+[tui]
+show_icons = true
+prompt = "> "
+placeholder = " "
+
+# preview = true
+# preview_width = 55
+# preview_min_width = 100
+# preview_border = "line"
+
+show_windows = true
+window_name_format = "#{window_index}: #{window_name}"
+
+[[session]]
+name = "notes"
+path = "~/notes"
