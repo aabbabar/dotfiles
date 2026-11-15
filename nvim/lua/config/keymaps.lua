@@ -263,7 +263,8 @@ local function copy_visual_file_reference()
 
   start_line, end_line = math.min(start_line, end_line), math.max(start_line, end_line)
   local line_anchor = start_line == end_line and ("#L" .. start_line) or ("#L" .. start_line .. "-L" .. end_line)
-  copy_to_clipboard(get_git_relative_path(abs_path) .. line_anchor)
+  copy_to_clipboard("@" .. get_git_relative_path(abs_path) .. line_anchor)
+  vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
 end
 
 -- Full absolute path
