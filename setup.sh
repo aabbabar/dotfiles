@@ -14,12 +14,12 @@ link_config() {
 }
 
 echo "==> Symlinking zshrc"
-link_config "$HOME/dotfiles/zsh/zshrc" "$HOME/.zshrc"
+link_config "$HOME/dotfiles/zsh/.zshrc" "$HOME/.zshrc"
 
 echo "==> Symlinking zsh scripts"
 mkdir -p ~/.zsh
-link_config "$HOME/dotfiles/zsh/git-fzf.zsh" "$HOME/.zsh/git-fzf.zsh"
-link_config "$HOME/dotfiles/zsh/worktrees.zsh" "$HOME/.zsh/worktrees.zsh"
+link_config "$HOME/dotfiles/zsh/.zsh/git-fzf.zsh" "$HOME/.zsh/git-fzf.zsh"
+link_config "$HOME/dotfiles/workmux/worktrees.zsh" "$HOME/.zsh/worktrees.zsh"
 
 echo "==> Symlinking session configuration"
 mkdir -p ~/.config/sesh
@@ -46,6 +46,6 @@ mkdir -p ~/.config
 link_config "$HOME/dotfiles/nvim" "$HOME/.config/nvim"
 
 echo "==> Symlinking tmux config"
-link_config "$HOME/dotfiles/tmux/tmux.conf" "$HOME/.tmux.conf"
+link_config "$HOME/dotfiles/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
 echo "==> Done!"

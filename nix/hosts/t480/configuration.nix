@@ -57,20 +57,34 @@
     isNormalUser = true;
     description = "aabbabar";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
     packages = with pkgs; [];
   };
 
   programs.sway.enable = true;
   security.pam.services.swaylock = {};
+  programs.zsh.enable = true;
+  programs.zsh.enableGlobalCompInit = false;
+  programs.zsh.interactiveShellInit = ''
+    export ZSH_PURE_SITE_FUNCTIONS="${pkgs.pure-prompt}/share/zsh/site-functions"
+    export ZSH_SYNTAX_HIGHLIGHTING="${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  '';
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     ghostty
+    fzf
     git
+    gh
     neovim
+    pure-prompt
+    stow
     swayidle
     swaylock
+    tmux
+    zsh-syntax-highlighting
+    zoxide
   ];
 
   nix.settings.experimental-features = [

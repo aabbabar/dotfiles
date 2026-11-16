@@ -1,5 +1,7 @@
 # prompt
 fpath+=($HOME/.zsh/pure)
+[[ -d "${ZSH_PURE_SITE_FUNCTIONS:-}" ]] &&
+  fpath+=("$ZSH_PURE_SITE_FUNCTIONS")
 autoload -U promptinit; promptinit
 prompt pure
 
@@ -66,7 +68,11 @@ alias -g .......='../../../../../..'
 alias -g ........='../../../../../../..'
 
 # plugins
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [[ -n "${ZSH_SYNTAX_HIGHLIGHTING:-}" && -f "$ZSH_SYNTAX_HIGHLIGHTING" ]]; then
+  source "$ZSH_SYNTAX_HIGHLIGHTING"
+fi
 source ~/.zsh/git-fzf.zsh
 [[ -f ~/.zsh/worktrees.zsh ]] && source ~/.zsh/worktrees.zsh
 eval "$(zoxide init zsh)"
@@ -79,7 +85,9 @@ export GIT_EDITOR=nvim
 # golang
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-export GOROOT=$(go env GOROOT)
+if command -v go >/dev/null 2>&1; then
+  export GOROOT="$(go env GOROOT)"
+fi
 
 # machine-specific config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
