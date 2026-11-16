@@ -78,6 +78,7 @@
     git
     gh
     neovim
+    opencode
     pure-prompt
     stow
     swayidle
