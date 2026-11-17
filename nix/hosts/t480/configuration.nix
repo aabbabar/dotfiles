@@ -14,7 +14,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-9dab28e0-180a-4f19-a561-e230f4b5266e".device = "/dev/disk/by-uuid/9dab28e0-180a-4f19-a561-e230f4b5266e";
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -24,6 +23,9 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Bluetooth
+  hardware.bluetooth.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/London";
@@ -61,7 +63,10 @@
     packages = with pkgs; [];
   };
 
-  programs.sway.enable = true;
+  programs.sway = {
+    enable = true;
+    extraPackages = with pkgs; [ brightnessctl grim ];
+  };
   security.pam.services.swaylock = {};
   programs.zsh.enable = true;
   programs.zsh.enableGlobalCompInit = false;
@@ -74,14 +79,17 @@
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     ghostty
+    bluetui
     fzf
     gcc
     git
     gh
     gnumake
     librewolf
+    libva-utils
     neovim
     opencode
+    pulsemixer
     pure-prompt
     stow
     swayidle
@@ -94,6 +102,29 @@
   ];
 
   services.mullvad-vpn.enable = true;
+
+  # Power management: battery charge thresholds for longevity (dual battery)
+  services.tlp = {
+    enable = true;
+    settings = {
+      START_CHARGE_THRESH_BAT0 = 85;
+      STOP_CHARGE_THRESH_BAT0 = 90;
+      START_CHARGE_THRESH_BAT1 = 85;
+      STOP_CHARGE_THRESH_BAT1 = 90;
+    };
+  };
+
+  # Thermal management (i5-8250U)
+  services.thermald.enable = true;
+
+  # Firmware updates via LVFS (manual: fwupdmgr)
+  services.fwupd.enable = true;
+
+  # Realtime scheduling for pipewire
+  security.rtkit.enable = true;
+
+  # Hardware video decode (Intel UHD 620)
+  hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
 
   nix.settings.experimental-features = [
     "nix-command"

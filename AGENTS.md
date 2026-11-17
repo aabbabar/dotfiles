@@ -99,9 +99,19 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
       needs a C compiler) and `gnumake` (telescope-fzf-native build step).
       All six parsers installed and highlighting verified active;
       fzf-native built (`libfzf.so`).
-- [ ] laptop hardware: bluetooth, fprintd, TLP/power management, fstrim,
-      thermald, fwupd
-- [ ] sway polish: config package, idle/lock behaviour, greetd?
+- [x] laptop hardware (2026-11-17, generation 23): bluetooth
+      (`hardware.bluetooth.enable`, frontend: bluetui TUI) + BT audio
+      verified end-to-end (Nothing Ear (a) paired, streaming from
+      LibreWolf); TLP with 85/90 charge thresholds on both batteries;
+      thermald;       fwupd (manual-only; LVFS metadata confirms all firmware current);
+      VA-API via `intel-media-driver` (iHD verified with vainfo; ~5% of
+      8 cores during 1080p60 YouTube); rtkit; sway module extras trimmed
+      to `brightnessctl` + `grim`; media-key binds added to the local
+      sway config. fprintd N/A — this unit has no fingerprint reader
+      (removed from scope). fstrim was already enabled (NixOS default).
+      zram skipped (swap unused, fails "really required" test).
+- [ ] sway polish: config package (fold in media-key binds from the
+      local config), idle/lock behaviour, greetd?
 - [ ] macOS hardening: re-run updated `setup.sh` (re-points links), adopt
       stow, then deprecate `setup.sh`
 - [ ] optional: sesh packaging (2.26.2 is in nixpkgs); workmux port
@@ -130,13 +140,23 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 9. VPN: Mullvad via the CLI-only package (`services.mullvad-vpn.enable`;
    module default is the CLI tools, no GUI). Managed from the terminal:
    `mullvad account login`, `mullvad connect`, `mullvad status`.
+10. Hardware baseline (2026-11-17): TLP with 85/90 charge thresholds on
+    both batteries; bluetui as the BT frontend (no blueman/bluetoothctl
+    as daily drivers); VA-API via `intel-media-driver`; fwupd enabled but
+    manual-only (nothing runs automatically); no zram (swap unused);
+    audio TUI is pulsemixer, network TUI is nmtui (both packaged; wpctl
+    and nmcli remain the primary CLIs); sway module extras trimmed to
+    `[brightnessctl grim]` (foot/wmenu/pulseaudio tools dropped).
 
 ## Machine status
 
 ### t480 (NixOS)
 
-- Running generation 21 from `~/dotfiles#t480` (nixpkgs 26.05.20261113):
-  opencode 1.15.10, nvim toolchain (gcc, gnumake, tree-sitter).
+- Running generation 23 from `~/dotfiles#t480` (nixpkgs 26.05.20261113):
+  opencode 1.15.10, nvim toolchain (gcc, gnumake, tree-sitter), browsers
+  (librewolf, ungoogled-chromium), mullvad-vpn, hardware baseline
+  (bluetooth+bluetui, tlp, thermald, fwupd, intel-media-driver, rtkit,
+  pulsemixer).
 - Account shell is zsh (passwd correct).
 - Known issue (Phase B root cause, verified 2026-11-16): the sway session
   exports a stale `SHELL=/run/current-system/sw/bin/bash`, inherited from a
@@ -145,10 +165,12 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
   bash. Fix: full logout/relogin — no config change required.
 - Session state 2026-11-17: Phase A complete and committed (847b17b).
   Phase B verified — zsh everywhere. C1 nvim compat fixes + toolchain
-  rebuild (generation 21) applied and verified: 25 plugins, zero
-  errors, six treesitter parsers installed with highlighting active,
-  fzf-native built. LibreWolf added as browser. Next: laptop hardware
-  and sway polish per Phase C.
+  rebuild applied and verified: 25 plugins, zero errors, six treesitter
+  parsers installed with highlighting active, fzf-native built.
+  LibreWolf + ungoogled-chromium + Mullvad VPN added and verified.
+  Hardware baseline complete (generation 23, see Phase C + decision
+  register item 10): bluetooth, TLP, thermald, fwupd, VA-API, rtkit;
+  BT audio verified. Next: sway polish and macOS hardening per Phase C.
 
 ### macOS
 
