@@ -77,9 +77,9 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 - [x] A1 hygiene: gitignore `result`; drop superseded stash; remove
       `~/rebuild.log` and `~/.config/ghostty/config.ghostty`
 - [x] A2 this doc; fold in and delete `nix/hosts/t480/HANDOVER.md`
-- [ ] A3 restructure all packages to mirror-$HOME; update `setup.sh`
+- [x] A3 restructure all packages to mirror-$HOME; update `setup.sh`
       (safe re-pointing of dotfiles-owned links); add ghostty skeleton
-- [ ] A5 stow `nvim`/`sesh`/`ghostty` on t480; nvim smoke test
+- [x] A5 stow `nvim`/`sesh`/`ghostty` on t480; nvim smoke test
       (copilot.nvim not used on t480; nodejs deliberately not installed)
 
 ### Phase B — shell fix (user action)
@@ -88,7 +88,15 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 
 ### Phase C — backlog (priority order)
 
-- [ ] nvim compat verification on NixOS (lazy.nvim bootstrap, LSP/mason)
+- [ ] nvim compat fixes (found by A5 smoke test, 2026-11-17): config loads
+      and gruvbox-material applies via the stowed path, but three plugin
+      errors on a fresh install — `plugins/telescope.lua` requires
+      `telescope.actions` at spec top level so the lazy.nvim import fails
+      and telescope never installs; `config/keymaps.lua:191` requires
+      `telescope.builtin` unconditionally (fails while telescope is
+      uninstalled); `plugins/treesitter.lua` calls the removed
+      `nvim-treesitter.configs` API while on the rewritten `main` branch.
+      Note: treesitter parser installs also need a C toolchain on NixOS.
 - [ ] laptop hardware: bluetooth, fprintd, TLP/power management, fstrim,
       thermald, fwupd
 - [ ] sway polish: config package, idle/lock behaviour, greetd?
