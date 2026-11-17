@@ -116,6 +116,20 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 5. Agents never author commits — suggest messages only; the user commits.
 6. t480 priorities: nvim compat, laptop hardware, sway polish. sesh stays
    uninstalled (config-only). workmux deferred. No Home Manager.
+7. FOSS-first policy for all software: investigate Free and Open Source
+   options first; consider non-FOSS only if FOSS options are unsatisfactory
+   or a non-FOSS alternative is far superior.
+8. Browser: LibreWolf adopted on t480 (2026-11-17) as the general
+   browsing browser; `ungoogled-chromium` adopted as the dedicated
+   Google-account browser (Gmail/YouTube only — never general browsing)
+   to keep Google cookies/fingerprint out of general browsing
+   (compartmentalization). qutebrowser tried and liked — revisit after a
+   fixed release (3.7.1+, with QtWebEngine 6.140+ eMudhra fix) reaches
+   the 26.05 branch; until then it is marked insecure in nixpkgs and
+   needs `permittedInsecurePackages` to adopt.
+9. VPN: Mullvad via the CLI-only package (`services.mullvad-vpn.enable`;
+   module default is the CLI tools, no GUI). Managed from the terminal:
+   `mullvad account login`, `mullvad connect`, `mullvad status`.
 
 ## Machine status
 
@@ -133,7 +147,8 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
   Phase B verified — zsh everywhere. C1 nvim compat fixes + toolchain
   rebuild (generation 21) applied and verified: 25 plugins, zero
   errors, six treesitter parsers installed with highlighting active,
-  fzf-native built. Next: laptop hardware and sway polish per Phase C.
+  fzf-native built. LibreWolf added as browser. Next: laptop hardware
+  and sway polish per Phase C.
 
 ### macOS
 

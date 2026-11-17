@@ -79,6 +79,7 @@
     git
     gh
     gnumake
+    librewolf
     neovim
     opencode
     pure-prompt
@@ -87,9 +88,12 @@
     swaylock
     tmux
     tree-sitter
+    ungoogled-chromium
     zsh-syntax-highlighting
     zoxide
   ];
+
+  services.mullvad-vpn.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"
