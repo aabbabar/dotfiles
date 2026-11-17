@@ -75,8 +75,10 @@
   environment.systemPackages = with pkgs; [
     ghostty
     fzf
+    gcc
     git
     gh
+    gnumake
     neovim
     opencode
     pure-prompt
@@ -84,6 +86,7 @@
     swayidle
     swaylock
     tmux
+    tree-sitter
     zsh-syntax-highlighting
     zoxide
   ];

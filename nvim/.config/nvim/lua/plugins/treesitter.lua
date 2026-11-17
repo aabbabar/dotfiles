@@ -5,11 +5,15 @@ return {
   build = ':TSUpdate',
   event = { "BufReadPost", "BufNewFile" },
   config = function()
-    require("nvim-treesitter.configs").setup({
-      ensure_installed = { "javascript", "typescript", "tsx", "json", "css", "html" },
-      highlight = { enable = true },
+    if vim.fn.executable('tree-sitter') == 1 then
+      require("nvim-treesitter").install({
+        "javascript", "typescript", "tsx", "json", "css", "html",
+      })
+    end
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function()
+        pcall(vim.treesitter.start)
+      end,
     })
-    -- vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    -- vim.o.foldtext = "v:lua.vim.treesitter.foldtext()"
   end,
 }

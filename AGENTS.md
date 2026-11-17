@@ -84,19 +84,21 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 
 ### Phase B — shell fix (user action)
 
-- [ ] Full logout/relogin to clear stale `SHELL=bash` (see t480 status)
+- [x] Full logout/relogin to clear stale `SHELL=bash` — verified
+      2026-11-17: `$SHELL` and tmux `default-shell` both zsh
 
 ### Phase C — backlog (priority order)
 
-- [ ] nvim compat fixes (found by A5 smoke test, 2026-11-17): config loads
-      and gruvbox-material applies via the stowed path, but three plugin
-      errors on a fresh install — `plugins/telescope.lua` requires
-      `telescope.actions` at spec top level so the lazy.nvim import fails
-      and telescope never installs; `config/keymaps.lua:191` requires
-      `telescope.builtin` unconditionally (fails while telescope is
-      uninstalled); `plugins/treesitter.lua` calls the removed
-      `nvim-treesitter.configs` API while on the rewritten `main` branch.
-      Note: treesitter parser installs also need a C toolchain on NixOS.
+- [x] nvim compat fixes (2026-11-17): telescope spec import (require
+      moved inside config), keymaps made lazy-safe via closures,
+      treesitter ported to the rewritten `main`-branch API (`install()` +
+      FileType autocmd with `vim.treesitter.start()`). Verified clean on
+      a fresh install: 25 plugins, zero errors.
+- [x] t480 toolchain for nvim extras (2026-11-17, generation 21):
+      `tree-sitter` + `gcc` (parser builds invoke `tree-sitter build`, which
+      needs a C compiler) and `gnumake` (telescope-fzf-native build step).
+      All six parsers installed and highlighting verified active;
+      fzf-native built (`libfzf.so`).
 - [ ] laptop hardware: bluetooth, fprintd, TLP/power management, fstrim,
       thermald, fwupd
 - [ ] sway polish: config package, idle/lock behaviour, greetd?
@@ -119,14 +121,19 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 
 ### t480 (NixOS)
 
-- Running generation 20 from `~/dotfiles#t480` (nixpkgs 26.05.20261113),
-  opencode 1.15.10 installed.
+- Running generation 21 from `~/dotfiles#t480` (nixpkgs 26.05.20261113):
+  opencode 1.15.10, nvim toolchain (gcc, gnumake, tree-sitter).
 - Account shell is zsh (passwd correct).
 - Known issue (Phase B root cause, verified 2026-11-16): the sway session
   exports a stale `SHELL=/run/current-system/sw/bin/bash`, inherited from a
   TTY login that predates the zsh switch. Ghostty honours `$SHELL` and the
   tmux server bakes it into `default-shell`, so fresh windows and panes run
   bash. Fix: full logout/relogin — no config change required.
+- Session state 2026-11-17: Phase A complete and committed (847b17b).
+  Phase B verified — zsh everywhere. C1 nvim compat fixes + toolchain
+  rebuild (generation 21) applied and verified: 25 plugins, zero
+  errors, six treesitter parsers installed with highlighting active,
+  fzf-native built. Next: laptop hardware and sway polish per Phase C.
 
 ### macOS
 

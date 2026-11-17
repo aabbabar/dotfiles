@@ -1,4 +1,3 @@
-local actions = require("telescope.actions")
 return {
   'nvim-telescope/telescope.nvim',
   dependencies = {
@@ -7,6 +6,7 @@ return {
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   },
   config = function()
+    local actions = require("telescope.actions")
     require("telescope").setup({
       defaults = {
         layout_strategy = "vertical",
