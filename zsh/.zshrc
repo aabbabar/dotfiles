@@ -81,6 +81,7 @@ eval "$(zoxide init zsh)"
 export EDITOR=nvim
 export VISUAL=nvim
 export GIT_EDITOR=nvim
+export PATH=$PATH:$HOME/.local/bin
 
 # golang
 export GOPATH=$HOME/go

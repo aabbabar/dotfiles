@@ -1,0 +1,78 @@
+set $mod Mod4
+
+font pango:monospace 10
+default_border none
+default_floating_border none
+floating_modifier $mod normal
+output * bg #282828 solid_color
+input * xkb_options caps:swapescape
+input * repeat_delay 200
+input * repeat_rate 50
+input type:touchpad {
+    natural_scroll enabled
+    tap enabled
+    tap_button_map lrm
+    scroll_factor 0.5
+    pointer_accel 0.25
+}
+
+input type:pointer pointer_accel 0.25
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Ctrl+h move left
+bindsym $mod+Ctrl+j move down
+bindsym $mod+Ctrl+k move up
+bindsym $mod+Ctrl+l move right
+
+bindsym $mod+Ctrl+e layout toggle split
+bindsym $mod+Shift+h exec $HOME/.local/bin/sway-resize left
+bindsym $mod+Shift+j exec $HOME/.local/bin/sway-resize down
+bindsym $mod+Shift+k exec $HOME/.local/bin/sway-resize up
+bindsym $mod+Shift+l exec $HOME/.local/bin/sway-resize right
+
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+
+bindsym $mod+Tab workspace back_and_forth
+
+bindsym $mod+Return exec ghostty
+bindsym $mod+shift+w exec librewolf
+bindsym $mod+shift+g exec chromium
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+e exec swaymsg exit
+bindsym $mod+Ctrl+Shift+l exec swaylock -c 282828
+bindsym $mod+d exec fuzzel
+bindsym $mod+Shift+v exec cliphist list | sed 's/\t/ /' | fuzzel --dmenu --width=100 --lines=15 | sed 's/ /\t/' | cliphist decode | ydotool type -d 0 -H 0 -f -
+
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+
+bindsym Print exec grim "$HOME/img/$(date +%F-%H%M%S).png"
+bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/img/$(date +%F-%H%M%S).png"
+
+exec wl-paste --watch cliphist store
+exec mako
+exec gammastep
+
+exec swayidle -w \
+  timeout 600 'swaylock -f -c 282828' \
+  timeout 630 'swaymsg "output * dpms off"' \
+  resume 'swaymsg "output * dpms on"' \
+  timeout 1800 '[ $(cat /sys/class/power_supply/AC/online) = 0 ] && systemctl suspend' \
+  timeout 3600 'systemctl suspend' \
+  before-sleep 'swaylock -f -c 282828'
