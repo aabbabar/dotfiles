@@ -58,14 +58,15 @@
   users.users."aabb" = {
     isNormalUser = true;
     description = "aabbabar";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "ydotool" ];
+    linger = true;
     shell = pkgs.zsh;
     packages = with pkgs; [];
   };
 
   programs.sway = {
     enable = true;
-    extraPackages = with pkgs; [ brightnessctl grim ];
+    extraPackages = with pkgs; [ brightnessctl grim slurp ];
   };
   security.pam.services.swaylock = {};
   programs.zsh.enable = true;
@@ -74,29 +75,43 @@
     export ZSH_PURE_SITE_FUNCTIONS="${pkgs.pure-prompt}/share/zsh/site-functions"
     export ZSH_SYNTAX_HIGHLIGHTING="${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   '';
+  programs.ydotool.enable = true;
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     ghostty
     bluetui
+    btop
+    chafa
+    cliphist
+    fd
     fzf
+    fuzzel
+    gammastep
     gcc
     git
     gh
     gnumake
+    jq
+    libnotify
     librewolf
     libva-utils
+    mako
     neovim
     opencode
     pulsemixer
     pure-prompt
+    ripgrep
     stow
     swayidle
+    swayimg
     swaylock
     tmux
     tree-sitter
     ungoogled-chromium
+    wl-clipboard
+    zathura
     zsh-syntax-highlighting
     zoxide
   ];

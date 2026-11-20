@@ -1,0 +1,8 @@
+background-color=#282828
+text-color=#ebdbb2
+border-color=#45403a
+border-size=1
+border-radius=6
+progress-color=source #83a598
+font=monospace 10
+default-timeout=5000

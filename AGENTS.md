@@ -43,9 +43,14 @@ deliberate future migration.
 | `zsh/.zshrc` | `~/.zshrc` | stowed | linked |
 | `zsh/.zsh/git-fzf.zsh` | `~/.zsh/git-fzf.zsh` | stowed | linked |
 | `tmux/.tmux.conf` | `~/.tmux.conf` | stowed | linked |
-| `nvim/.config/nvim/**` | `~/.config/nvim/**` | pending A5 | via setup.sh |
-| `sesh/.config/sesh/sesh.toml` | `~/.config/sesh/sesh.toml` | pending A5 | via setup.sh |
-| `ghostty/.config/ghostty/config` | `~/.config/ghostty/config` | pending A5 | via setup.sh |
+| `nvim/.config/nvim/**` | `~/.config/nvim/**` | stowed | via setup.sh |
+| `sesh/.config/sesh/sesh.toml` | `~/.config/sesh/sesh.toml` | stowed | via setup.sh |
+| `ghostty/.config/ghostty/config` | `~/.config/ghostty/config` | stowed | via setup.sh |
+| `sway/.config/sway/config` | `~/.config/sway/config` | stowed | via setup.sh |
+| `sway/.local/bin/sway-resize` | `~/.local/bin/sway-resize` | stowed (via sway pkg) | via setup.sh |
+| `fuzzel/.config/fuzzel/fuzzel.ini` | `~/.config/fuzzel/fuzzel.ini` | stowed | via setup.sh |
+| `mako/.config/mako/config` | `~/.config/mako/config` | stowed | via setup.sh |
+| `gammastep/.config/gammastep/config.ini` | `~/.config/gammastep/config.ini` | stowed | via setup.sh |
 | `workmux/**` | `~/.config/workmux/**`, `~/.zsh/worktrees.zsh`, `~/.copilot/hooks/workmux-status.json` | not stowed (deferred) | via setup.sh |
 
 ## Agent rules (binding)
@@ -110,8 +115,26 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
       sway config. fprintd N/A — this unit has no fingerprint reader
       (removed from scope). fstrim was already enabled (NixOS default).
       zram skipped (swap unused, fails "really required" test).
-- [ ] sway polish: config package (fold in media-key binds from the
-      local config), idle/lock behaviour, greetd?
+- [x] sway polish (2026-11-17): `sway` stow package created
+      (`sway/.config/sway/config`, stowed on t480 — config now in the
+      repo); idle/lock via swayidle: blank+lock after 10 min idle, dpms
+      off 30s later, suspend after 30 min on battery / 60 min on AC,
+      lock before sleep; screenshot binds (Print full-screen,
+      Mod+Print region via slurp, saved to `~/img`); no status bar
+      (user choice); TTY start kept — greetd declined (decision 11).
+- [x] desktop session round (2026-11-20, generation 29): launcher
+      fuzzel (gruvbox-styled ini, `Mod+d`; dmenu-mode for scripts);
+      clipboard history via cliphist (`wl-paste --watch`) with
+      instant-paste on `Mod+Shift+v` through ydotool (decision 13);
+      notification daemon mako (decision 12, gruvbox theme);
+      night light gammastep (decision 12, London manual coordinates);
+      libnotify; sway input polish (decision 14); borderless windows +
+      directional resize script (decision 15); keymap additions
+      (decision 15); utilities btop, zathura, ripgrep, fd, jq
+      (declined: yazi, lazygit, ncdu, wf-recorder); `linger = true`
+      (decision 16). fnott and wtype removed after trials.
+      Store hygiene: garbage-collected 29 accumulated generations
+      older than 1 day, wiped trial configs and tmp artifacts.
 - [ ] macOS hardening: re-run updated `setup.sh` (re-points links), adopt
       stow, then deprecate `setup.sh`
 - [ ] optional: sesh packaging (2.26.2 is in nixpkgs); workmux port
@@ -146,17 +169,59 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
     manual-only (nothing runs automatically); no zram (swap unused);
     audio TUI is pulsemixer, network TUI is nmtui (both packaged; wpctl
     and nmcli remain the primary CLIs); sway module extras trimmed to
-    `[brightnessctl grim]` (foot/wmenu/pulseaudio tools dropped).
+    `[brightnessctl grim slurp]` (foot/wmenu/pulseaudio tools dropped).
+11. Sway session (2026-11-17): started from the TTY (no greetd — user
+    declined; zero display manager); no status bar; idle/lock/suspend
+    via swayidle timeouts; screenshots to `~/img` via grim (+slurp
+    region). Machine-local quirk: media keys predate the stow package —
+    now canonical in the repo config.
+12. Desktop tools (2026-11-20): launcher is fuzzel (gruvbox-styled ini,
+    icons off, dmenu-mode for script menus). Notification daemon is
+    mako (gruvbox theme) — fnott was trialed alongside and dropped;
+    mako preferred for its rules engine, grouping and history.
+    Night light is gammastep (London, manual provider, 6500K/3000K) —
+    wlsunset trialed and dropped (gammastep allows one-shot manual
+    overrides: `-O`, `-g`, `-b`). Trial-by-usage: both candidates
+    installed, verdict taken, loser removed in the same group.
+13. Clipboard: history via cliphist fed by `wl-paste --watch`;
+    instant-paste `Mod+Shift+v` = `cliphist list | fuzzel --dmenu |
+    cliphist decode | ydotool type -d 0 -H 0 -f -`. ydotool replaced
+    wtype, which mangled shift-modified characters in ghostty
+    (wtype's virtual-keyboard keymap vs ghostty's multi-keyboard
+    handling; no delay fixed it). ydotool types via evdev/uinput
+    through ydotoold (`programs.ydotool.enable`; user in the
+    `ydotool` group; group membership requires re-login, hence
+    decision 16). Tradeoff: ASCII-only input.
+14. Sway input/looks (2026-11-20): borderless (`default_border none`,
+    `default_floating_border none`); trackpad tap-to-click with `lrm`
+    map (2-finger right, 3-finger middle), natural scroll,
+    `scroll_factor 0.5`, `pointer_accel 0.25` on touchpad + pointers,
+    repeat 200/50, `caps:swapescape`.
+15. Sway keymap (2026-11-20): a user config fully replaces sway's
+    default keymap (no merging). Windows move with
+    `$mod+Ctrl+hjkl`, resize via the directional script
+    `sway-resize` on `$mod+Shift+hjkl` (divider always moves in the
+    pressed direction, works per-axis for horizontal/vertical
+    splits); split toggle `$mod+Ctrl+e`; workspace toggle only via
+    `$mod+Tab` (`workspace back_and_forth`; no
+    `workspace_auto_back_and_forth` — plain number keys are no-ops
+    when already on target); lock `$mod+Ctrl+Shift+l`.
+16. Linger (2026-11-20): `users.users.aabb.linger = true` — user
+    manager survives logout, so tmux sessions (and opencode) persist
+    across relogins; also required for ydotool group membership to
+    apply without losing tmux state.
 
 ## Machine status
 
 ### t480 (NixOS)
 
-- Running generation 23 from `~/dotfiles#t480` (nixpkgs 26.05.20261113):
+- Running generation 29 from `~/dotfiles#t480` (nixpkgs 26.05.20261113):
   opencode 1.15.10, nvim toolchain (gcc, gnumake, tree-sitter), browsers
   (librewolf, ungoogled-chromium), mullvad-vpn, hardware baseline
   (bluetooth+bluetui, tlp, thermald, fwupd, intel-media-driver, rtkit,
-  pulsemixer).
+  pulsemixer), desktop session (fuzzel, cliphist+ydotool, mako,
+  gammastep, libnotify, wl-clipboard), utilities (btop, zathura,
+  ripgrep, fd, jq), ydotool module + linger.
 - Account shell is zsh (passwd correct).
 - Known issue (Phase B root cause, verified 2026-11-16): the sway session
   exports a stale `SHELL=/run/current-system/sw/bin/bash`, inherited from a
@@ -170,7 +235,13 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
   LibreWolf + ungoogled-chromium + Mullvad VPN added and verified.
   Hardware baseline complete (generation 23, see Phase C + decision
   register item 10): bluetooth, TLP, thermald, fwupd, VA-API, rtkit;
-  BT audio verified. Next: sway polish and macOS hardening per Phase C.
+  BT audio verified. Sway polish complete (see Phase C): config
+  stowed, idle/lock/suspend via swayidle, screenshot binds.
+- Session state 2026-11-20: desktop session round complete
+  (generation 29, see Phase C + decisions 12–16): fuzzel launcher,
+  cliphist history + ydotool instant-paste, mako, gammastep, sway
+  input/borderless/resize polish, utilities, linger. Next:
+  macOS hardening per Phase C.
 
 ### macOS
 
