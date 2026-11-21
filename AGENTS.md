@@ -207,7 +207,7 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
     `workspace_auto_back_and_forth` — plain number keys are no-ops
     when already on target); lock `$mod+Ctrl+Shift+l`.
 16. Linger (2026-11-20): `users.users.aabb.linger = true` — user
-    manager survives logout, so tmux sessions (and opencode) persist
+    manager survives logout, so tmux sessions persist
     across relogins; also required for ydotool group membership to
     apply without losing tmux state.
 
@@ -216,7 +216,7 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 ### t480 (NixOS)
 
 - Running generation 29 from `~/dotfiles#t480` (nixpkgs 26.05.20261113):
-  opencode 1.15.10, nvim toolchain (gcc, gnumake, tree-sitter), browsers
+  nvim toolchain (gcc, gnumake, tree-sitter), browsers
   (librewolf, ungoogled-chromium), mullvad-vpn, hardware baseline
   (bluetooth+bluetui, tlp, thermald, fwupd, intel-media-driver, rtkit,
   pulsemixer), desktop session (fuzzel, cliphist+ydotool, mako,
@@ -252,7 +252,7 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 ## Phase B instructions (t480 shell fix)
 
 ```sh
-tmux kill-server   # kills running tmux panes and any opencode session
+tmux kill-server   # kills running tmux panes
 # then: exit sway, log out of the TTY session completely,
 #       log back in, start sway
 ```
