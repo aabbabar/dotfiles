@@ -137,8 +137,14 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
       older than 1 day, wiped trial configs and tmp artifacts.
 - [ ] macOS hardening: re-run updated `setup.sh` (re-points links), adopt
       stow, then deprecate `setup.sh`
-- [ ] optional: sesh packaging (2.26.2 is in nixpkgs); workmux port
-      (source: github raine/workmux)
+- [x] sesh packaging (2026-11-20): `sesh` 2.26.2 added to
+      `environment.systemPackages` (generation 30); tmux bindings already
+      present in `.tmux.conf` activate automatically (`prefix s` picker
+      popup, `prefix Tab` last session). Config was already stowed.
+      Pulled from `nixpkgs-unstable` (2.34.0) so the picker supports
+      ctrl+p/ctrl+n navigation natively (26.05 branch is still at 2.26.2).
+      `nixpkgs-unstable` input exists solely for such laggard packages.
+      Remaining: workmux port (source: github raine/workmux)
 
 ## Decision register
 
@@ -147,8 +153,9 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 3. Restructure: all packages at once.
 4. Tracker: this file; supersedes `nix/hosts/t480/HANDOVER.md`.
 5. Agents never author commits — suggest messages only; the user commits.
-6. t480 priorities: nvim compat, laptop hardware, sway polish. sesh stays
-   uninstalled (config-only). workmux deferred. No Home Manager.
+6. t480 priorities: nvim compat, laptop hardware, sway polish. sesh
+   adopted (2026-11-20, previously config-only). workmux deferred. No
+   Home Manager.
 7. FOSS-first policy for all software: investigate Free and Open Source
    options first; consider non-FOSS only if FOSS options are unsatisfactory
    or a non-FOSS alternative is far superior.
@@ -240,8 +247,8 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
 - Session state 2026-11-20: desktop session round complete
   (generation 29, see Phase C + decisions 12–16): fuzzel launcher,
   cliphist history + ydotool instant-paste, mako, gammastep, sway
-  input/borderless/resize polish, utilities, linger. Next:
-  macOS hardening per Phase C.
+  input/borderless/resize polish, utilities, linger; sesh adopted
+  (generation 30). Next: macOS hardening per Phase C.
 
 ### macOS
 

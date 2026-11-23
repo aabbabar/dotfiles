@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, pi, ... }:
+{ config, pkgs, pi, nixpkgs-unstable, ... }:
 
 {
   imports =
@@ -103,6 +103,7 @@
     pulsemixer
     pure-prompt
     ripgrep
+    nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.sesh
     stow
     swayidle
     swayimg
@@ -110,6 +111,7 @@
     tmux
     tree-sitter
     ungoogled-chromium
+    vlc
     wl-clipboard
     zathura
     zsh-syntax-highlighting
