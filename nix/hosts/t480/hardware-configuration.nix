@@ -26,9 +26,12 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  swapDevices =
-    [ { device = "/dev/mapper/luks-9dab28e0-180a-4f19-a561-e230f4b5266e"; }
-    ];
+  # Encrypted swap partition (nvme0n1p3, LUKS UUID 9dab28e0-…) deliberately
+  # unused — see AGENTS.md ("zram skipped, swap unused"). Kept off swapDevices
+  # because the mapper device is never opened, which made every switch wait
+  # out the 90s systemd device-job timeout for it.
+
+  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

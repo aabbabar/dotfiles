@@ -177,6 +177,12 @@ stow -d ~/dotfiles -t ~ -D <pkg>     # unstow
     audio TUI is pulsemixer, network TUI is nmtui (both packaged; wpctl
     and nmcli remain the primary CLIs); sway module extras trimmed to
     `[brightnessctl grim slurp]` (foot/wmenu/pulseaudio tools dropped).
+    Swap (2026-11-23): the encrypted swap partition (nvme0n1p3, LUKS
+    UUID 9dab28e0-…) stays deliberately unused and is removed from
+    `swapDevices` — the never-opened mapper device made every switch
+    hang ~90s on the systemd device-job timeout (looked like
+    polkit.service, which restarts fine and is just the last line
+    printed before the silent wait).
 11. Sway session (2026-11-17): started from the TTY (no greetd — user
     declined; zero display manager); no status bar; idle/lock/suspend
     via swayidle timeouts; screenshots to `~/img` via grim (+slurp
