@@ -99,7 +99,7 @@
     libva-utils
     mako
     neovim
-    pi.packages.${pkgs.system}.default
+    pi.packages.${pkgs.stdenv.hostPlatform.system}.default
     pulsemixer
     pure-prompt
     ripgrep

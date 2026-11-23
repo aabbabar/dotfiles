@@ -6,8 +6,8 @@
 
   outputs = { nixpkgs, pi, ... }: {
     nixosConfigurations.t480 = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
       modules = [
+        { nixpkgs.hostPlatform = "x86_64-linux"; }
         ./nix/hosts/t480/configuration.nix
       ];
       specialArgs = { inherit pi; };
